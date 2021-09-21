@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 export interface Message {
   fromName: string;
@@ -71,10 +73,22 @@ export class DataService {
     }
   ];
 
-  constructor() { }
+  public uri = environment.uri;
+
+  constructor(private http: HttpClient) { }
 
   public getMessages(): Message[] {
     return this.messages;
+  }
+
+  public getSQLData(query: string) {
+    const url = this.uri + '/api/query';
+    const body = {
+      dbms: 'MSSQL',
+      default: true,
+      query
+    };
+    return this.http.post(url, body);
   }
 
   public getMessageById(id: number): Message {

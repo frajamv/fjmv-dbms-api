@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
       Inbox
@@ -22,4 +22,35 @@
   <ion-list>
     <app-message *ngFor="let message of getMessages()" [message]="message"></app-message>
   </ion-list>
+</ion-content> -->
+
+<ion-header>
+    <ion-toolbar>
+        <ion-title>SQL DATA RENDERER
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-input type="text" [(ngModel)]="query"></ion-input>
+    <ion-button (click)="fetchDataToDB()">
+        Send
+        <ion-icon name="server-outline"></ion-icon>
+    </ion-button>
+    <hr>
+    <ion-list *ngIf="result && result.length > 0;">
+        <ion-row *ngFor="let row of result; let j = index">
+            <ion-col *ngFor="let key of keys; let i = index">
+                <p *ngIf="j === 0">{{key}}</p>
+                <br>
+                <p class="ion-text-left">
+                    {{getObjectData(row, i)}}
+                </p>
+            </ion-col>
+        </ion-row>
+    </ion-list>
+    <ion-spinner *ngIf="(!result || !result[0]) && !error_message"></ion-spinner>
+    <ion-text *ngIf="!result && error_message">
+        Error: {{error_message}}
+    </ion-text>
 </ion-content>
